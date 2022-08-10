@@ -1,11 +1,25 @@
 import React from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import HomePage from "../HomePage/HomePage";
+import HomePage from "../views/HomePage/HomePage";
 import People from "../People";
 import Goals from "../Goals";
-
+import { useAuth0 } from "@auth0/auth0-react";
 const Header = () => {
+
+    const {
+        user,
+        isAuthenticated,
+        loginWithRedirect,
+        logout,
+      } = useAuth0();
+
+      const logoutWithRedirect = () =>
+      logout({
+        returnTo: window.location.origin,
+      });
+
+
     return <HeaderWrapper>
         {/* <TheName>The Name</TheName> */}
         <NavBar>
@@ -13,8 +27,27 @@ const Header = () => {
             <StyledLink to="/people">People</StyledLink>
             <StyledLink to="/">Home Page</StyledLink>
             <Wrapper>
-                <StyledLink to="/signup">Sign Up</StyledLink>
-                <StyledLink to="/login">Log In</StyledLink>
+                {/* <StyledLink to="/signup">Sign Up</StyledLink> */}
+                
+                {!isAuthenticated && (
+                <Button
+                    id="qsLoginBtn"
+                    color="primary"
+                    onClick={() => loginWithRedirect()}
+                  >
+                    Log in
+                  </Button>)
+                  }
+
+                {isAuthenticated && (
+               <Button
+                    id="qsLoginBtn"
+                    color="primary"
+                    onClick={() => logoutWithRedirect()}
+                  >
+                    Log out
+                  </Button>)
+                  }
             </Wrapper>
         </NavBar>
     </HeaderWrapper>
@@ -22,6 +55,8 @@ const Header = () => {
 }
 
 export default Header;
+
+const Button = styled.button``
 
 const HeaderWrapper = styled.header`
 display: flex;

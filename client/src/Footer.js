@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 import Goals from "./Goals";
 import People from "./People";
-import HomePage from "./HomePage/HomePage";
+import HomePage from "./views/HomePage/HomePage";
 
 
 
@@ -13,7 +13,7 @@ const Footer = () => {
 
         <Wrapper>
             <Wrapper1>
-                <HomePageLink to={"/goals"}>Home Page</HomePageLink>
+                <HomePageLink to={"/"}>Home Page</HomePageLink>
                 <GoalsLink to={"/goals"}>Goals</GoalsLink>
                 <PeopleLink to={"/people"}>People</PeopleLink>
             </Wrapper1>
