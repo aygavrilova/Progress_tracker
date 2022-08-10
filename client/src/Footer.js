@@ -16,14 +16,7 @@ const Footer = () => {
                 <HomePageLink to={"/goals"}>Home Page</HomePageLink>
                 <GoalsLink to={"/goals"}>Goals</GoalsLink>
                 <PeopleLink to={"/people"}>People</PeopleLink>
-
-                {/* <Brand to={"/products/16384"}>Belkin</Brand> */}
-
-                {/* <Goals />
-                <People />
-                <HomePage /> */}
             </Wrapper1>
-
         </Wrapper>
 
     )
