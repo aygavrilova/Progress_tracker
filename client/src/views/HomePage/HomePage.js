@@ -29,7 +29,8 @@ display: flex;
 justify-content: center;
 align-items: center;
 height: calc(100vh);
-background-image: url("images/galaxy-3608029_1280.jpeg");
+background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("images/galaxy-3608029_1280.jpeg");
+/* background-image: url("images/galaxy-3608029_1280.jpeg"); */
 background-position: center;
 background-size: cover;
 
@@ -59,11 +60,12 @@ font-size: 40px;
 padding: 15px 30px 15px 30px;
 text-align: center;
 align-content: center;
-border-radius: 8px;
+border-radius: 25px;
 border: 1px solid darkgrey;
 text-decoration: none;
 :hover {
     border-radius: 50px;
+    background-color: #51C4D3;
 }
 :focus {
     border: 5px solid white;

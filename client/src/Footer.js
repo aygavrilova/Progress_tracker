@@ -13,9 +13,9 @@ const Footer = () => {
 
         <Wrapper>
             <Wrapper1>
-                <HomePageLink to={"/"}>Home Page</HomePageLink>
-                <GoalsLink to={"/goals"}>Goals</GoalsLink>
-                <PeopleLink to={"/people"}>People</PeopleLink>
+                <StyledLink to={"/"}>Home Page</StyledLink>
+                <StyledLink to={"/goals"}>Goals</StyledLink>
+                <StyledLink to={"/people"}>People</StyledLink>
             </Wrapper1>
         </Wrapper>
 
@@ -26,7 +26,6 @@ export default Footer;
 
 
 const Wrapper = styled.div`
-    /* display: block; */
     display: flex;
     bottom: 0;
     bottom: 0;
@@ -39,29 +38,19 @@ const Wrapper1 = styled.div`
 display: flex;
 flex-direction: column;
 font-size: 8px;
-/* margin: 0px; */
 `
-const GoalsLink = styled(Link)`
- /* display: flex;
-  justify-content: center; */
-  color: white;
-  font-size: 16px;
-  /* line-height: 30px; */
-  text-decoration: none;
-  cursor: pointer;
-  margin: 5px;
-`
-const PeopleLink = styled(Link)`
-  color: white;
-  font-size: 16px;
-  text-decoration: none;
-  cursor: pointer;
-  margin: 5px;
-`
-const HomePageLink = styled(Link)`
- color: white;
-  font-size: 16px;
-  text-decoration: none;
-  cursor: pointer;
-  margin: 5px;
+
+const StyledLink = styled(Link)`
+color: white;
+font-size: 16px;
+text-decoration: none;
+cursor: pointer;
+margin: 5px 0px 5px 15px;
+:hover {
+    color: #51C4D3;
+    font-size: 18px;
+}
+:focus {
+    color: #51C4D3;
+} 
 `
