@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import Goals from "./Goals";
+import Goals from "./views/HomePage/Goals";
 import People from "./People";
 import HomePage from "./views/HomePage/HomePage";
 
@@ -32,7 +32,7 @@ const Wrapper = styled.div`
     bottom: 0;
     height: 100px;
     width: 100%;
-    background-color: violet;
+    background-color: #4D4C7D;
     `
 
 const Wrapper1 = styled.div`
@@ -44,7 +44,7 @@ font-size: 8px;
 const GoalsLink = styled(Link)`
  /* display: flex;
   justify-content: center; */
-  color: darkblue;
+  color: white;
   font-size: 16px;
   /* line-height: 30px; */
   text-decoration: none;
@@ -52,14 +52,14 @@ const GoalsLink = styled(Link)`
   margin: 5px;
 `
 const PeopleLink = styled(Link)`
-  color: darkblue;
+  color: white;
   font-size: 16px;
   text-decoration: none;
   cursor: pointer;
   margin: 5px;
 `
 const HomePageLink = styled(Link)`
- color: darkblue;
+ color: white;
   font-size: 16px;
   text-decoration: none;
   cursor: pointer;

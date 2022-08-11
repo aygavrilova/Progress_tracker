@@ -28,7 +28,7 @@ const Wrapper = styled.div`
 display: flex;
 justify-content: center;
 align-items: center;
-height: calc(100vh - 160px);
+height: calc(100vh);
 background-image: url("images/galaxy-3608029_1280.jpeg");
 background-position: center;
 background-size: cover;
@@ -53,7 +53,8 @@ font-size: 60px;
 const SignUpLink = styled(Link)`
 display: flex;
 height: auto;
-background-color: violet;
+color: white;
+background-color: #4D4C7D;
 font-size: 40px;
 padding: 15px 30px 15px 30px;
 text-align: center;
