@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import Goals from "./views/HomePage/Goals";
+import Goals from "./views/Goals";
 import People from "./People";
 import HomePage from "./views/HomePage/HomePage";
 
@@ -10,7 +10,6 @@ import HomePage from "./views/HomePage/HomePage";
 
 const Footer = () => {
     return (
-
         <Wrapper>
             <Wrapper1>
                 <StyledLink to={"/"}>Home Page</StyledLink>
@@ -28,18 +27,19 @@ export default Footer;
 const Wrapper = styled.div`
     display: flex;
     bottom: 0;
-    bottom: 0;
     height: 100px;
     width: 100%;
     background-color: #4D4C7D;
     `
+
+
+
 
 const Wrapper1 = styled.div`
 display: flex;
 flex-direction: column;
 font-size: 8px;
 `
-
 const StyledLink = styled(Link)`
 color: white;
 font-size: 16px;
@@ -54,3 +54,5 @@ margin: 5px 0px 5px 15px;
     color: #51C4D3;
 } 
 `
+
+

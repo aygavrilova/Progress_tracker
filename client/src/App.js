@@ -2,15 +2,15 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import React from "react";
 import styled from "styled-components";
-
-import Header from "./Header/Header";
+import Logout from "./views/Logout";
+import Header from "./views/Header/Header";
 import HomePage from "./views/HomePage/HomePage";
 import UserPage from "./UserPage";
 import People from "./People";
-import Goals from "./views/HomePage/Goals";
+import Goals from "./views/Goals";
 import Footer from "./Footer";
-import { Link } from "react-router-dom";
-import NewGoal from "./NewGoal";
+import CreatePage from "./views/Create";
+import Profile from "./views/Profile";
 // import SignUp from "./Header/SignUp";
 // import LogIn from "./Header/LogIn";
 
@@ -21,11 +21,14 @@ const App = () => {
       <Routes>
         <Route exact path="/" element={<HomePage />} />
         <Route exact path="/user" element={<UserPage />} />
+        <Route exact path="/logout" element={<Logout/>}/>
         <Route exact path="/people" element={<People />} />
         <Route exact path="/goals" element={<Goals />} />
-        <Route exact path="/newgoal" element={<NewGoal />} />
-        {/* <Route exact path="/user/signup" element={<SignUp />} /> */}
-        {/* <Route exact path="/user/login" element={<LogIn />} /> */}
+        <Route exact path="/create" element={<CreatePage />} />
+        <Route exact path="/newgoal" element={<CreatePage />} />
+        <Route exact path="/profile" element={<Profile/>}/>
+        <Route exact path="/goal/:id" element={<p>view goal</p>} />
+        <Route exact path="/goal/:id/edit" element={<p>edit goal</p>} />
       </Routes>
       <Footer/>
     </Router>

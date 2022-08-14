@@ -1,18 +1,13 @@
 import React from "react";
 import styled from "styled-components";
-import { Link } from "react-router-dom";
-import HomePage from "../views/HomePage/HomePage";
-import People from "../People";
-import Goals from "../views/HomePage/Goals";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useState } from "react";
-
-// import React, { Component } from 'react';
 
 const Header = () => {
     const {
         user,
         isAuthenticated,
+        isLoading,
         loginWithRedirect,
         logout,
     } = useAuth0();
@@ -25,38 +20,34 @@ const Header = () => {
     const [dropdown, setDropdown] = useState(false);
     const [isVisible, setIsVisible] = useState(true);
 
-    const onDropDownBlur =()=>{
-        setDropdown(false)
-    }
-
 
     return <HeaderWrapper>
         <NavBar>
-            <Container>
-                <Button1 style={{ display: isVisible ? "block" : " " }} onClick={()=>setDropdown(!dropdown)}>
-                    Anna 
+            {isAuthenticated && (<Container>
+                <Button1 style={{ display: isVisible ? "block" : " " }} onClick={() => setDropdown(!dropdown)}>
+                    <UserImg src={user.picture} width="40"></UserImg>
                 </Button1>
                 {
-                    
                     dropdown ? (
-                        <Dropdown onMouseLeave={()=>setDropdown(false)}  >
-                        <Ul  >
-                            <List>New Goal</List>
-                            <List>My friends</List>
-                            <List>My Goals</List>
-                            <List>My Account</List>
-                            <List>Log Out</List>
-                        </Ul>
-                    </Dropdown>
+                        <Dropdown onMouseLeave={() => setDropdown(false)}  >
+                            <Ul  >
+                                <List><Styled href="/create">New Goal</Styled></List>
+                                <List><Styled href="#">My friends</Styled></List>
+                                <List><Styled href="#">My Goals</Styled></List>
+                                <List><Styled href="/profile">My Account</Styled></List>
+                                <List><Styled href="/logout">Log out</Styled></List>
+                            </Ul>
+                        </Dropdown>
                     ) : ""
                 }
-            </Container>
-            <StyledLink to="/">Home Page</StyledLink>
-            <StyledLink to="/goals">Goals</StyledLink>
-            <StyledLink to="/people">People</StyledLink>
+            </Container>)}
+
+            <StyledLink href="/">Home Page</StyledLink>
+            <StyledLink href="/goals">Goals</StyledLink>
+            <StyledLink href="/people">People</StyledLink>
 
             <Wrapper>
-                {!isAuthenticated && (
+                {!isLoading&&!isAuthenticated && (
                     <Button
                         id="qsLoginBtn"
                         color="primary"
@@ -65,15 +56,7 @@ const Header = () => {
                         Log in
                     </Button>)
                 }
-                {isAuthenticated && (
-                    <Button
-                        id="qsLoginBtn"
-                        // color="primary"
-                        onClick={() => logoutWithRedirect()}
-                    >
-                        Log out
-                    </Button>)
-                }
+                
             </Wrapper>
 
         </NavBar>
@@ -110,7 +93,7 @@ const Dropdown = styled.div`
 position: absolute;
 top: 100%;
 left: 0;
-width: 300px;
+width: max-content;
 z-index: 5;
 border: 1px solid rgba(0, 0, 0, 0.04);
 box-shadow: 0 16px 24px 2px rgba(0, 0, 0, 0.14);
@@ -127,10 +110,8 @@ margin: 0;
 const List = styled.li`
 font-size: 15px;
 padding: 8px 12px;
-background-color: white;
 :hover {
 cursor: pointer;
-color: white;
 background-color: #51C4D3;
 }
 `
@@ -139,8 +120,9 @@ background-color: #51C4D3;
 const Button1 = styled.button`
 border: none;
 background-color: #4D4C7D;
+font-size: 15px;
 color: white;
-margin-top: 17px;
+margin: 10px;
 :hover {
     color: #51C4D3;
     font-size: 18px;
@@ -161,11 +143,11 @@ const NavBar = styled.div`
 display: flex;
 flex-direction: row;
 justify-content: space-between;
-height: 50px;
+height: 60px;
 width: 100%;
 background-color: #4D4C7D;
 `
-const StyledLink = styled.li`
+const StyledLink = styled.a`
 display: flex;
 flex-direction: row;
 text-decoration: none;
@@ -178,4 +160,30 @@ color: white;
 :focus {
     color: #51C4D3;
 } 
+`
+const Styled = styled.a`
+text-decoration: none;
+color: #1A1A40;
+font-size: 18px;
+padding: 5px;
+:hover {
+    color: white;
+}
+`
+
+const Logout = styled.button`
+font-size: 15px;
+border: 2px solid #51C4D3;
+border-radius: 8px;
+padding: 5px;
+background-color: #51C4D3;
+cursor: pointer;
+:hover {
+    background-color: #51C4D3;
+    color: white;
+}
+`
+const UserImg = styled.img`
+border-radius: 8px;
+
 `

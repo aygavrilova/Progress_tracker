@@ -13,7 +13,6 @@ const NewGoal = () => {
                 <GreyLine>
                     <Buttons>
                         <GoalBtn>Goal</GoalBtn>
-                        <HabitBtn>Habit</HabitBtn>
                     </Buttons>
                     <ResetBtn>Reset</ResetBtn>
                 </GreyLine>
@@ -95,22 +94,7 @@ const GoalBtn = styled.button`
   height: 30px;
   width: 80px;
   border: 1px solid gray;
-  border-radius: 5px 0px 0px 5px;
-  :focus {
-    background-color: #51C4D3;
-  }
-
-  `
-
-const HabitBtn = styled.button`
-  background-color: #B4A5A5;
-  /* background-color: #51C4D3; */
-  font-size: 10px;
-  color: white;
-  height: 30px;
-  width: 80px;
-  border: 1px solid gray;
-  border-radius: 0px 5px 5px 0px;
+  border-radius: 5px 5px 5px 5px;
   :focus {
     background-color: #51C4D3;
   }

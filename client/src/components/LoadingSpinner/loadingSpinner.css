@@ -1,0 +1,12 @@
+@keyframes spinner {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+  .spinner-icon {
+    color: #51C4D3;
+    animation: spinner 1.5s linear infinite;
+  }

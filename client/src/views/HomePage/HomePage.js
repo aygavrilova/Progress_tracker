@@ -1,24 +1,37 @@
 import React from "react";
-import Footer from "../../Footer";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
+import { useAuth0 } from "@auth0/auth0-react";
+import AuthHomePage from "./AuthHomePage";
+
 
 // import image from "./watch.jpg";
 
 
 const HomePage = () => {
-    return (
-        <Wrapper>
-            <Wrapper1>
-                <Text>
-                    Remember all things are possible for those have a goal!
-                </Text>
-                <SignUpLink to={"/signup"}>Join</SignUpLink>
-            </Wrapper1>
-        </Wrapper>
+    const {
+        isAuthenticated,
+    } = useAuth0();
 
+    return <>
+        {
+            isAuthenticated && (
+                <AuthHomePage></AuthHomePage>
+            )
+        }
 
-    );
+        {!isAuthenticated && (
+            <Wrapper>
+                <Wrapper1>
+                    <Text>
+                        Remember all things are possible for those have a goal!
+                    </Text>
+                    <SignUpLink to={"/signup"}>Join</SignUpLink>
+                </Wrapper1>
+            </Wrapper>
+        )
+        }
+    </>
 };
 
 export default HomePage;
@@ -30,10 +43,8 @@ justify-content: center;
 align-items: center;
 height: calc(100vh);
 background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("images/galaxy-3608029_1280.jpeg");
-/* background-image: url("images/galaxy-3608029_1280.jpeg"); */
 background-position: center;
 background-size: cover;
-
 `
 
 const Wrapper1 = styled.div`
@@ -43,6 +54,7 @@ align-items: center;
 justify-content: center;
 width: 50vw;
 `
+
 
 const Text = styled.p`
 display: flex;
