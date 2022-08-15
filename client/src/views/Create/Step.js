@@ -13,8 +13,9 @@ const Step = ({ step,setStepName, setStepDesc }) => {
     }
 
     return (
-        <Wrapper onMouseLeave={() => setToolbarHidden(true)}>
-            <Name value={step.name} onChange={(e)=>setStepName(step.id, e.target.value) }  ></Name>
+        <StepBody onMouseLeave={() => setToolbarHidden(true)}>
+            <Name value={step.name} onChange={(e)=>setStepName(step.id, e.target.value) } placeholder="Name of Step" ></Name>
+            <EditorWrapper>
             <Editor
                 editorState={editorState}
                 toolbarHidden={toolbarHidden}
@@ -26,23 +27,27 @@ const Step = ({ step,setStepName, setStepDesc }) => {
                 onContentStateChange = {(state)=> setStepDesc(step.id, state)}
                 onEditorStateChange={(state) => onEditorStateChange(state)}
             />
-        </Wrapper>)
+            </EditorWrapper>
+        </StepBody>)
 }
 
 export default Step;
 
-const Wrapper = styled.div`
-background-color: red;
+const StepBody = styled.div`
+display: flex;
+flex-direction: column;
+width: 50vw;
+margin-right: 10px;
 `
 
 const Name = styled.input`
-width: 100%;
+/* width: 100%; */
 background-color: #EEEEEE;
 text-align: left;
 border: 1px solid #1A1A40;
 border-radius: 5px;
 font-size: 20px;
-/* margin: 0px 30px 10px 30px; */
+padding: 5px 0px 5px 0px; 
 :hover {
     border: 2px solid #51C4D3;
 }
@@ -50,10 +55,16 @@ font-size: 20px;
     border: 2px solid #1A1A40;
 } 
 `
-/* display: flex;
-/* width: 47vw; */
-// margin-right: 30px;
 
-
-const Description = styled.textarea`
+const EditorWrapper = styled.div`
+border: 1px solid #1A1A40;
+background-color: #EEEEEE;
+border-radius: 5px;
+margin-top: 10px;
+:hover {
+    border: 2px solid #51C4D3;
+}
+:focus {
+    border: 2px solid #1A1A40;
+} 
 `
