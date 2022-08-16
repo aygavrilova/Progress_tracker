@@ -33,7 +33,7 @@ const Header = () => {
                             <Ul  >
                                 <List><Styled href="/create">New Goal</Styled></List>
                                 <List><Styled href="#">My friends</Styled></List>
-                                <List><Styled href="#">My Goals</Styled></List>
+                                <List><Styled href="/mygoals">My Goals</Styled></List>
                                 <List><Styled href="/profile">My Account</Styled></List>
                                 <List><Styled href="/logout">Log out</Styled></List>
                             </Ul>
@@ -68,15 +68,18 @@ export default Header;
 
 const Button = styled.button`
 border: none;
-background-color: #4D4C7D;
+background-color: #9E7777;
+font-family: 'Caveat', cursive;
+font-size: 18px;
 color: white;
+margin-right: 10px;
 :hover {
-    color: #51C4D3;
-    font-size: 18px;
+    color: #F5E8C7;
+    font-size: 20px;
     cursor: pointer;
 }
 :focus {
-    color: #51C4D3;
+    color: #DEBA9D;
 } 
 `
 
@@ -87,6 +90,7 @@ display: flex;
 const Container = styled.div`
 position: relative;
 display: inline-block;
+justify-content: baseline;
 `
 
 const Dropdown = styled.div`
@@ -112,14 +116,14 @@ font-size: 15px;
 padding: 8px 12px;
 :hover {
 cursor: pointer;
-background-color: #51C4D3;
+background-color: #FFEDDB;
 }
 `
 
 
 const Button1 = styled.button`
 border: none;
-background-color: #4D4C7D;
+background-color: #9E7777;
 font-size: 15px;
 color: white;
 margin: 10px;
@@ -145,20 +149,22 @@ flex-direction: row;
 justify-content: space-between;
 height: 60px;
 width: 100%;
-background-color: #4D4C7D;
+background-color: #9E7777;
 `
 const StyledLink = styled.a`
 display: flex;
 flex-direction: row;
 text-decoration: none;
+font-family: 'Caveat', cursive;
+font-size: 18px;
 margin: 15px 10px 15px 15px;
 color: white;
 :hover {
-    color: #51C4D3;
-    font-size: 18px;
+    color: #EDCDBB;
+    font-size: 20px;
 }
 :focus {
-    color: #51C4D3;
+    color: #6F4C5B;
 } 
 `
 const Styled = styled.a`
@@ -166,23 +172,13 @@ text-decoration: none;
 color: #1A1A40;
 font-size: 18px;
 padding: 5px;
+color: #6F4C5B;
 :hover {
-    color: white;
+    font-size: 20px;
+    color: #6F4C5B;
 }
 `
 
-const Logout = styled.button`
-font-size: 15px;
-border: 2px solid #51C4D3;
-border-radius: 8px;
-padding: 5px;
-background-color: #51C4D3;
-cursor: pointer;
-:hover {
-    background-color: #51C4D3;
-    color: white;
-}
-`
 const UserImg = styled.img`
 border-radius: 8px;
 

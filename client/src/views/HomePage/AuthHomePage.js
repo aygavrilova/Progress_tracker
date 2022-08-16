@@ -7,7 +7,6 @@ const AuthHomePage = () => {
     } = useAuth0();
 
     useEffect(()=>{
-        console.log(user)
     },[user])
 
 }

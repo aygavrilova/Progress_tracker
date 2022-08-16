@@ -5,7 +5,6 @@ import { useAuth0 } from "@auth0/auth0-react";
 import AuthHomePage from "./AuthHomePage";
 
 
-// import image from "./watch.jpg";
 
 
 const HomePage = () => {
@@ -41,8 +40,8 @@ const Wrapper = styled.div`
 display: flex;
 justify-content: center;
 align-items: center;
-height: calc(100vh);
-background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("images/galaxy-3608029_1280.jpeg");
+height: calc(100vh - 160px);
+background: url("images/background.jpg");
 background-position: center;
 background-size: cover;
 `
@@ -59,17 +58,20 @@ width: 50vw;
 const Text = styled.p`
 display: flex;
 text-align: center;
-color: white;
+color: #6F4C5B;
+font-family: 'Caveat', cursive;
 font-size: 60px;
 `
 
 const SignUpLink = styled(Link)`
 display: flex;
 height: auto;
-color: white;
-background-color: #4D4C7D;
+font-family: 'Caveat', cursive;
+color: #9E7777;
+background-color: #EDCDBB;
 font-size: 40px;
 padding: 15px 30px 15px 30px;
+margin-top: 20px;
 text-align: center;
 align-content: center;
 border-radius: 25px;
@@ -77,7 +79,8 @@ border: 1px solid darkgrey;
 text-decoration: none;
 :hover {
     border-radius: 50px;
-    background-color: #51C4D3;
+    background-color: #9E7777;
+    color: white;
 }
 :focus {
     border: 5px solid white;
