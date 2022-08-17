@@ -1,4 +1,4 @@
-const { MongoClient } = require("mongodb");
+const { MongoClient, ObjectId } = require("mongodb");
 require("dotenv").config();
 const { MONGO_URI } = process.env;
 const dbName = "progress_tracker";
@@ -32,7 +32,27 @@ const getAllProfiles = async()=>{
     }
 };
 
-const getProfile = async(userId, projection) =>{
+const getProfileById = async(profileId)=>{
+    const client = new MongoClient(MONGO_URI, options);
+    try{
+        await client.connect();
+        const db = client.db(dbName);
+        const profile = await db.collection(dbColl).findOne({_id:ObjectId(profileId)})
+        const result = {ok:true, profile:profile}
+        return result;
+    }
+    catch(err){
+        console.log(err);
+        return {
+            ok:false,
+            error:err
+        };
+    }finally{
+        await client.close();
+    }
+}
+
+const getProfileByUserId = async(userId, projection) =>{
     const client = new MongoClient(MONGO_URI, options);
     try{
         await client.connect();
@@ -82,4 +102,4 @@ const updateProfile = async(userId, updateObject)=>{
     }
 }
 
-module.exports = { getAllProfiles,getProfile,updateProfile };
+module.exports = { getAllProfiles,getProfileByUserId,updateProfile,getProfileById };
