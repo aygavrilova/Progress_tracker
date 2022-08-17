@@ -1,17 +1,18 @@
 import styled from "styled-components";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
-import { EditorState, convertToRaw } from 'draft-js';
-import { getConfig } from "../../../config";
+import { EditorState } from 'draft-js';
 import { createGoal } from "../../../api/GoalApi"
-import { useAuth0, User } from "@auth0/auth0-react";
+import { uploadImage } from "../../../api/ImageApi"
 import { Editor } from 'react-draft-wysiwyg';
 import { v4 as uuidv4 } from 'uuid';
 import Step from "./Step.js"
 import { useNavigate } from "react-router-dom";
+import { CurrentUserContext } from "../../../CurrentUserContext";
+import ImagePicker from "../../../components/ImagePicker";
+import LoadingSpinner from "../../../components/LoadingSpinner";
 
 
-const config = getConfig();
 const createEmptyStep = () => {
   return {
     id: uuidv4(),
@@ -26,31 +27,37 @@ const CreatePage = () => {
   const [steps, setSteps] = useState([createEmptyStep()])
   const [editorState, setEditorState] = useState(EditorState.createEmpty())
   const [toolbarHidden, setToolbarHidden] = useState(true)
-
+  const [file, setFile] = useState("")
   const [name, setName] = useState("")
   const [accompCriteria, setAccompCriteria] = useState("")
   const [description, setDescription] = useState("")
   const navigate = useNavigate();
-  const {
-    getAccessTokenSilently,
-  } = useAuth0();
 
+  const {
+    accessToken,
+    currentProfile,
+  } = useContext(CurrentUserContext)
 
   const onSubmitHandler = async (event) => {
+    setIsLoading(true);
     event.preventDefault();
 
+    let imagePath = "";
+    if(file !== ""){
+      imagePath = await uploadImage(file,accessToken)
+    }
+    
     const newGoal = {
       name: name,
       accompCriteria: accompCriteria,
       description: JSON.stringify(description),
-      steps: steps
+      steps: steps,
+      profileId: currentProfile._id,
+      imagePath:imagePath
     }
-    const accessToken = await getAccessTokenSilently({
-      audience: `https://${config.domain}/api/v2/`,
-      scope: "openid",
-    });
-
+    
     const goalId = await createGoal(accessToken, newGoal);
+    setIsLoading(false);
     navigate(`/goal/${goalId}`)
   }
 
@@ -91,9 +98,15 @@ const CreatePage = () => {
     } : x))
   }
 
+  const onImageSelected = (file) =>{
+    setFile(file);
+  }
+
   return (
     <Wrapper>
-
+      {
+        isLoading && (<LoadingSpinner></LoadingSpinner>)
+      }
       <Card onSubmit={onSubmitHandler}>
         <GreyLine>
           <Titel>
@@ -104,6 +117,7 @@ const CreatePage = () => {
         <Text>Outline your goal</Text>
         <Input type="text"
           id="name"
+          minLength="5"
           placeholder="  For Example, to run a marathon"
           value={name}
           onChange={(e) => setName(e.target.value)} />
@@ -113,7 +127,15 @@ const CreatePage = () => {
           placeholder="  For Example, the marathon must be finished no matter the time"
           value={accompCriteria}
           onChange={(e) => setAccompCriteria(e.target.value)} />
+        
+      
+
+    <ImageSelector>
+      <ImagePicker onImageSelected={onImageSelected}></ImagePicker>
+    </ImageSelector>
+
         <Text>Description</Text>
+       
         <EditorWrapper>
           <Editor
             editorState={editorState}
@@ -133,7 +155,7 @@ const CreatePage = () => {
                 <ActionWrapper key={index}>
                   <Count>{index + 1}</Count>
                   <Step step={item} setStepName={setStepName} setStepDesc={setStepDesc} key={item.id} />
-                  <DeleteBtn onClick={() => deleteStep(item.id)}>Delete</DeleteBtn>
+                  <DeleteBtn type="button" onClick={() => deleteStep(item.id)}>Delete</DeleteBtn>
                 </ActionWrapper>)
             })
           }
@@ -152,6 +174,18 @@ const CreatePage = () => {
 }
 
 export default CreatePage;
+
+const ImageSelector = styled.div`
+display: flex;
+flex-direction: column;
+align-content: center;
+margin: auto;
+margin-top: 20px;
+margin-bottom: 10px;
+/* margin: 20px 30px 20px 30px; */
+width: 90%;
+height: fit-content;
+`
 
 const Wrapper = styled.div`
 position: relative;

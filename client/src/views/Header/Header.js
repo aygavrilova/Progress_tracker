@@ -12,11 +12,6 @@ const Header = () => {
         logout,
     } = useAuth0();
 
-    const logoutWithRedirect = () =>
-        logout({
-            returnTo: window.location.origin,
-        });
-
     const [dropdown, setDropdown] = useState(false);
     const [isVisible, setIsVisible] = useState(true);
 
@@ -43,11 +38,14 @@ const Header = () => {
             </Container>)}
 
             <StyledLink href="/">Home Page</StyledLink>
-            <StyledLink href="/goals">Goals</StyledLink>
+            {
+                !isAuthenticated && !isLoading && (<StyledLink href="/goals">Goals</StyledLink>)
+            }
+
             <StyledLink href="/people">People</StyledLink>
 
             <Wrapper>
-                {!isLoading&&!isAuthenticated && (
+                {!isLoading && !isAuthenticated && (
                     <Button
                         id="qsLoginBtn"
                         color="primary"
@@ -56,7 +54,7 @@ const Header = () => {
                         Log in
                     </Button>)
                 }
-                
+
             </Wrapper>
 
         </NavBar>

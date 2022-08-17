@@ -1,14 +1,16 @@
 import styled from "styled-components";
 import { useEffect, useState } from "react";
-import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
-import { EditorState, convertToRaw } from 'draft-js';
-import { getConfig } from "../../../config";
-import { createGoal, updateGoal } from "../../../api/GoalApi"
-import { useAuth0, User } from "@auth0/auth0-react";
+import { useAuth0 } from "@auth0/auth0-react";
+import { EditorState } from 'draft-js';
 import { Editor } from 'react-draft-wysiwyg';
-import htmlToDraft from 'html-to-draftjs';
-import { getGoal } from '../../../api/GoalApi'
+import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import { v4 as uuidv4 } from 'uuid';
+
+import { getConfig } from "../../../config";
+import { updateGoal } from "../../../api/GoalApi"
+import { uploadImage } from "../../../api/ImageApi"
+import { getGoal } from '../../../api/GoalApi'
+import ImagePicker from "../../../components/ImagePicker";
 import Step from "./Step.js"
 import { useNavigate, useParams } from "react-router-dom";
 import LoadingSpinner from "../../../components/LoadingSpinner";
@@ -35,6 +37,9 @@ const EditGoalPage = () => {
     const [accompCriteria, setAccompCriteria] = useState("")
     const [description, setDescription] = useState("")
     const navigate = useNavigate();
+    const [file, setFile] = useState("")
+    const [imagePath, setImagePath] = useState("")
+
     const {
         getAccessTokenSilently,
     } = useAuth0();
@@ -64,7 +69,10 @@ const EditGoalPage = () => {
         if (goal.description !== undefined) {
             const descObj = JSON.parse(goal.description);
             setContentState(descObj)
+            setDescription(descObj)
         }
+
+        setImagePath(goal.imagePath);
 
         setName(goal.name ? goal.name : "")
         setAccompCriteria(goal.accompCriteria ? goal.accompCriteria : "");
@@ -73,16 +81,22 @@ const EditGoalPage = () => {
 
     const onSubmitHandler = async (event) => {
         event.preventDefault();
+        const accessToken = await getAccessTokenSilently({
+            audience: `https://${config.domain}/api/v2/`,
+            scope: "openid",
+        });
+        let imagePath = goal.imagePath;
+        if (file !== "") {
+            imagePath = await uploadImage(file, accessToken)
+        }
 
         goal.name = name
         goal.accompCriteria = accompCriteria
         goal.description = JSON.stringify(description)
         goal.steps = steps;
+        goal.imagePath = imagePath
 
-        const accessToken = await getAccessTokenSilently({
-            audience: `https://${config.domain}/api/v2/`,
-            scope: "openid",
-        });
+
 
         const goalId = await updateGoal(accessToken, goal);
         navigate(`/goal/${goalId}`)
@@ -92,9 +106,9 @@ const EditGoalPage = () => {
         setSteps(steps.concat([createEmptyStep()]))
     }
 
-    const onEditorStateChange = (editorState) => {
-        setEditorState(editorState)
-    }
+    // const onEditorStateChange = (editorState) => {
+    //     setEditorState(editorState)
+    // }
 
     const onContentStateChange = (contentState) => {
         setDescription(contentState)
@@ -118,15 +132,19 @@ const EditGoalPage = () => {
         } : x))
     }
 
+    const onImageSelected = (file) => {
+        setFile(file);
+    }
+
     return (
         <Wrapper>
-            
+
             <Card onSubmit={onSubmitHandler}>
-            <GreyLine>
-            <Titel>
-                Edit the Goal
-            </Titel>
-            </GreyLine>
+                <GreyLine>
+                    <Titel>
+                        Edit the Goal
+                    </Titel>
+                </GreyLine>
                 <Text>Outline your goal</Text>
                 <Input type="text"
                     id="name"
@@ -139,15 +157,19 @@ const EditGoalPage = () => {
                     placeholder="  For Example, the marathon must be finished no matter the time"
                     value={accompCriteria}
                     onChange={(e) => setAccompCriteria(e.target.value)} />
+
+                <ImageSelector>
+                    <ImagePicker image={imagePath} onImageSelected={onImageSelected}></ImagePicker>
+                </ImageSelector>
                 <Text>Description</Text>
                 <EditorWrapper>
                     <Editor
-                        editorState={editorState}
+                        // editorState={editorState}
                         toolbarHidden={toolbarHidden}
                         contentState={contentState}
                         onFocus={() => setToolbarHidden(false)}
                         onBlur={() => setToolbarHidden(true)}
-                        onEditorStateChange={onEditorStateChange}
+                        // onEditorStateChange={onEditorStateChange}
                         onContentStateChange={onContentStateChange}
                     />
                 </EditorWrapper>
@@ -188,6 +210,10 @@ position: relative;
   min-height: 100vh;
   `
 
+const ImageSelector = styled.div`
+margin: 20px 30px 10px 30px;
+`
+
 const ActionPlan = styled.div`
 display: flex;
   flex-direction: column;
@@ -216,7 +242,7 @@ background-color: #B4A5A5;
   width: 80px;
   border: 1px solid gray;
   border-radius: 8px;
-  margin: 0px 30px 0px 45px;
+  margin: 0px 30px 10px 45px;
   :hover {
     border: 2px solid #6F4C5B;
   }

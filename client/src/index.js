@@ -4,6 +4,7 @@ import { Auth0Provider } from "@auth0/auth0-react";
 import { getConfig } from "./config";
 import history from "./utils/history";
 import App from './App';
+import { CurrentUserProvider } from './CurrentUserContext';
 
 const config = getConfig();
 const onRedirectCallback = (appState) => {
@@ -23,7 +24,9 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <Auth0Provider {...providerConfig}>
+      <CurrentUserProvider>
       <App />
+      </CurrentUserProvider>
     </Auth0Provider>
   </React.StrictMode>
 );

@@ -3,23 +3,29 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
 import AuthHomePage from "./AuthHomePage";
-
+import LoadingSpinner from "../../components/LoadingSpinner";
 
 
 
 const HomePage = () => {
     const {
+        isLoading,
         isAuthenticated,
     } = useAuth0();
 
     return <>
+
         {
-            isAuthenticated && (
+            isLoading && (<LoadingSpinner></LoadingSpinner>)
+        }
+
+        {
+            isAuthenticated && !isLoading && (
                 <AuthHomePage></AuthHomePage>
             )
         }
 
-        {!isAuthenticated && (
+        {!isAuthenticated && !isLoading && (
             <Wrapper>
                 <Wrapper1>
                     <Text>

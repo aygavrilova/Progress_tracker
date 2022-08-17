@@ -1,6 +1,6 @@
 import { useState } from "react";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
-import { EditorState, convertToRaw } from 'draft-js';
+import { EditorState,  } from 'draft-js';
 import { Editor } from 'react-draft-wysiwyg';
 import styled from "styled-components";
 

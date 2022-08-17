@@ -1,22 +1,22 @@
 import styled from "styled-components";
 import ToggleSwitch from '../../../components/ToggleSwitch'
 import draftToHtml from 'draftjs-to-html'
-import { useEffect, useState } from "react";
-import { getConfig } from "../../../config";
+import { useEffect, useState, useContext } from "react";
 import { updateStepStatus } from '../../../api/GoalApi'
-import { useAuth0, User } from "@auth0/auth0-react";
-import { useNavigate } from "react-router-dom";
+import { CurrentUserContext } from "../../../CurrentUserContext";
 
-const config = getConfig();
-
-const StepView = ({ step, goalId,setIsLoading }) => {
+const StepView = ({ step, goalId,setIsLoading, onStepStatusChanged,isReadOnly }) => {
     const [stepDescription, setStepDescription] = useState("")
     const [finished, setFinished] = useState(false)
     const [name, setName] = useState("")
     const stepId = step.id;
+   
     const {
-        getAccessTokenSilently,
-    } = useAuth0();
+        currentProfile, isUserLoading, isUserAuthenticated,
+        accessToken,
+    } = useContext(CurrentUserContext)
+
+    const isOwner = currentProfile !== null && currentProfile._id === goalId;
 
     useEffect(() => {
         if (!step) {
@@ -42,16 +42,12 @@ const StepView = ({ step, goalId,setIsLoading }) => {
         setIsLoading(true)
         const finished = e.target.checked;
 
-        const accessToken = await getAccessTokenSilently({
-            audience: `https://${config.domain}/api/v2/`,
-            scope: "openid",
-        });
-
         const updateObj = {
             finished: finished
         }
         const step = await updateStepStatus(accessToken, goalId, stepId, updateObj)
         setStepProperties(step)
+        onStepStatusChanged(step);
         setIsLoading(false)
     }
 
@@ -64,9 +60,13 @@ const StepView = ({ step, goalId,setIsLoading }) => {
     }
 
     return (<Wrapper >
-        <ToggleSwitch  checked={finished} onChange={changeStepStatus}></ToggleSwitch>
+        {
+            !isUserLoading && isUserAuthenticated && !isReadOnly && (<ToggleSwitch  checked={finished} onChange={changeStepStatus}></ToggleSwitch>)
+        }
         <StepBody>
-            <Name>{name}</Name>
+            {
+                finished ? (<Name><s>{name}</s></Name>): (<Name>{name}</Name>)
+            }
             <Description dangerouslySetInnerHTML={createDescMarkup()} ></Description>
         </StepBody>
     </Wrapper>)
@@ -79,6 +79,7 @@ display:flex;
 flex-direction: row;
 width: 90vw;
 height: auto;
+/* margin: 10px 30px 10px 30px; */
 `
 
 const StepBody = styled.div`

@@ -5,15 +5,24 @@ import Goals from "./views/Goals";
 import People from "./People";
 import HomePage from "./views/HomePage/HomePage";
 
-
+import { useAuth0 } from "@auth0/auth0-react";
 
 
 const Footer = () => {
+    const {
+        user,
+        isAuthenticated,
+        isLoading,
+        loginWithRedirect,
+        logout,
+    } = useAuth0();
     return (
         <Wrapper>
             <Wrapper1>
                 <StyledLink to={"/"}>Home Page</StyledLink>
-                <StyledLink to={"/goals"}>Goals</StyledLink>
+                {
+                    !isAuthenticated && !isLoading && (<StyledLink to="/goals">Goals</StyledLink>)
+                }
                 <StyledLink to={"/people"}>People</StyledLink>
             </Wrapper1>
         </Wrapper>
@@ -29,7 +38,7 @@ const Wrapper = styled.div`
     bottom: 0;
     height: 100px;
     width: 100%;
-    background-color: #4D4C7D;
+    background-color: #9E7777;
     `
 
 
@@ -42,16 +51,17 @@ font-size: 8px;
 `
 const StyledLink = styled(Link)`
 color: white;
+font-family: 'Caveat', cursive;
 font-size: 16px;
 text-decoration: none;
 cursor: pointer;
-margin: 5px 0px 5px 15px;
+margin: 10px 0px 5px 15px;
 :hover {
-    color: #51C4D3;
+    color: #EDCDBB;
     font-size: 18px;
 }
 :focus {
-    color: #51C4D3;
+    color: #6F4C5B;
 } 
 `
 

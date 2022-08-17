@@ -1,21 +1,9 @@
-import { useAuth0 } from "@auth0/auth0-react";
+import { useContext } from "react";
+import { CurrentUserContext } from "../CurrentUserContext";
 
-const Logout = ()=>{
-    const {
-        user,
-        isAuthenticated,
-        isLoading,
-        loginWithRedirect,
-        logout,
-    } = useAuth0();
-
-    const logoutWithRedirect = () =>
-        logout({
-            returnTo: window.location.origin,
-        });
-
-        logoutWithRedirect();
-        return ""
+const Logout = () => {
+    const { logoutWithRedirect } = useContext(CurrentUserContext);
+    logoutWithRedirect();
 }
 
 export default Logout;

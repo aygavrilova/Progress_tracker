@@ -1,14 +1,10 @@
-import { useAuth0 } from "@auth0/auth0-react";
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
+import { CurrentUserContext } from "../../CurrentUserContext";
+import AllGoalsView from "../Goals";
 
 const AuthHomePage = () => {
-    const {
-        user,
-    } = useAuth0();
 
-    useEffect(()=>{
-    },[user])
-
+    return <AllGoalsView></AllGoalsView>
 }
 
 export default AuthHomePage;

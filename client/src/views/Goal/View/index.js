@@ -1,68 +1,99 @@
 import styled from "styled-components";
-import { Routes, Route, useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { getGoal } from '../../../api/GoalApi'
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import draftToHtml from 'draftjs-to-html'
 import StepsView from "./Steps";
-
+import { CurrentUserContext } from "../../../CurrentUserContext";
 import LoadingSpinner from "../../../components/LoadingSpinner";
+import ProgressBar from "./ProgressBar";
 const ViewGoal = () => {
-    const { id } = useParams();
-    const [isLoading, setIsLoading] = useState(false);
-    const [goal, setGoal] = useState({})
-    const [steps, setSteps] = useState([])
-    const [descHtml, setDescHtml] = useState("")
-    const navigate = useNavigate();
+  const { id } = useParams();
+  const [isLoading, setIsLoading] = useState(false);
+  const [goal, setGoal] = useState({})
+  const [steps, setSteps] = useState([])
+  const [descHtml, setDescHtml] = useState("")
+  const navigate = useNavigate();
+  const [isReadOnly, setIsReadonly] = useState(true)
+  const {isUserLoading,currentProfile} = useContext(CurrentUserContext)
+  const [img, setImg] = useState("")
 
-    useEffect(() => {
-        fetchGoal(id);
-    }, [])
+  useEffect(() => {
+    fetchGoal(id);
+  }, [])
 
-    const fetchGoal = async (id) => {
-        setIsLoading(true);
+  const fetchGoal = async (id) => {
+    setIsLoading(true);
 
-        const goal = await getGoal(id);
-        if (goal) {
-            if (!goal.steps) {
-                setSteps(goal.steps);
-            }
+    const goal = await getGoal(id);
+    if (goal) {
+      setSteps(goal.steps);
 
-            const descObj = JSON.parse(goal.description);
-            const descriptionHtml = draftToHtml(descObj)
+      const descObj = JSON.parse(goal.description);
+      const descriptionHtml = draftToHtml(descObj)
 
-            setGoal(goal)
-            setDescHtml(descriptionHtml)
-        }
+      setGoal(goal)
+      setDescHtml(descriptionHtml)
 
-        setIsLoading(false);
+      if(goal.imagePath !== undefined && goal.imagePath !== ""){
+        setImg(goal.imagePath);
+      }
+
+      if(currentProfile._id){
+        setIsReadonly(currentProfile._id !== goal.profileId);
+      }
     }
 
-    const createDescMarkup = () => {
-        return { __html: `${descHtml}` }
+    setIsLoading(false);
+  }
+
+  useEffect(()=>{
+
+    if(!currentProfile._id){
+      return
     }
 
-    const editWithRedirect = ()=>{
-        const url =`/goal/${id}/edit`;
-        navigate(url);
-    }
+    setIsReadonly(currentProfile._id !== goal.profileId);
 
-    return <Wrapper>
-        {
-            isLoading ? (<LoadingSpinner></LoadingSpinner>) : (
-                <Card>
-                    <GreyLine>
-                        <Name>{goal.name}</Name>
-                    </GreyLine>
-                    <Text>{goal.accompCriteria}</Text>
-                    <Text dangerouslySetInnerHTML={createDescMarkup()} ></Text>
-                    <StepsView goal={goal} id={id}></StepsView>
-                    <GreyLine2>
-                    <Button onClick={editWithRedirect}>Edit</Button>
-                    </GreyLine2>
-                </Card>
-            )
-        }
-    </Wrapper>
+  }, [currentProfile])
+
+  const onStepStatusChanged = (step) => {
+    setSteps((currentStep) => currentStep.map(x => x.id === step.id ? {
+      ...x,
+      finished: step.finished
+    } : x))
+  }
+
+  const createDescMarkup = () => {
+    return { __html: `${descHtml}` }
+  }
+
+  const editWithRedirect = () => {
+    const url = `/goal/${id}/edit`;
+    navigate(url);
+  }
+
+  return <Wrapper>
+    {
+      isLoading || isUserLoading ? (<LoadingSpinner></LoadingSpinner>) : (
+        <Wrapper1>
+          <ProgressBar steps={steps}></ProgressBar>
+          <Card>
+            <GreyLine>
+              <Name>{goal.name}</Name>
+            </GreyLine>
+            <Text>{goal.accompCriteria}</Text>
+            <Image src={img}></Image>
+            <Text dangerouslySetInnerHTML={createDescMarkup()} ></Text>
+            <StepsView goal={goal} id={id} onStepStatusChanged={onStepStatusChanged} isReadOnly={isReadOnly} ></StepsView>
+            <GreyLine2>
+              <Button onClick={editWithRedirect}>Edit</Button>
+            </GreyLine2>
+          </Card>
+        </Wrapper1>
+      )
+    }
+  </Wrapper>
 
 }
 
@@ -78,6 +109,11 @@ position: relative;
   min-height: 100vh;
 `
 
+const Wrapper1 = styled.div`
+display: flex;
+flex-direction: column;
+`
+
 const Card = styled.div`
 display: flex;
   flex-direction: column;
@@ -85,7 +121,7 @@ display: flex;
   width: 60vw;
   background-color: #FFFBE9;
   border-radius: 25px;
-  margin-top: 50px;
+  margin-top: 30px;
 margin-bottom: 15px;
 box-shadow: 5px 20px 24px 15px rgba(160,188,194,0.42);
 
@@ -98,7 +134,7 @@ display: flex;
 `
 
 const Text = styled.p`
-margin: 20px 0px 10px 30px;
+margin: 10px 30px 10px 30px;
 `
 const GreyLine = styled.div`
 display: flex;
@@ -119,6 +155,10 @@ height: 60px;
 width: auto;
 border-radius: 0px 0px 25px 25px;
 margin-top: 20px;
+`
+
+const Image = styled.img`
+margin: 10px 30px 10px 30px;
 `
 
 const Button = styled.button`

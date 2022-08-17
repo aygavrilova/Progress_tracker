@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { CurrentUserContext } from "../../CurrentUserContext";
 import { getUserGoals } from "../../api/GoalApi"
 import LoadingSpinner from "../../components/LoadingSpinner";
-import GoalView from "./Goal";
+import GoalView from "../GoalView";
 
 const MyGoalsView = () => {
     const {
@@ -39,19 +39,18 @@ const MyGoalsView = () => {
 
     const fetchMyGoals = async () => {
         setIsGoalsLoading(true);
-        console.log(currentProfile);
         const goals = await getUserGoals(currentProfile._id);
-        console.log(goals);
         setGoals(goals);
         setIsGoalsLoading(false);
     }
 
     return (<>
         {
-            isGoalsLoading ?
+            isGoalsLoading || isUserLoading ?
                 (<LoadingSpinner></LoadingSpinner>)
                 : (
                     <Wrapper>
+                        <Titel>My Goals</Titel>
                         <GoalsRoot>
                             {
                                 goals.map(goal=>{
@@ -69,11 +68,33 @@ const MyGoalsView = () => {
 export default MyGoalsView;
 
 const Wrapper = styled.div`
+position: relative;
+justify-content: space-around;
 display: flex;
-justify-content: center;
+flex-direction: column;
 align-items: center;
-height: calc(100vh - 160px);
+min-height: 100vh;  
+background: url("/images/watercolor-background.jpg");
 `
 
 const GoalsRoot = styled.div`
+display: flex;
+flex-direction: row;
+flex-wrap: wrap;
+width: 1300px;
+height: fit-content;
+margin-top: 10px;
+margin-bottom: 20px;
+cursor: pointer;
+`
+
+const Titel = styled.h1`
+display: flex;
+color: #1A1A40;
+font-family: 'Caveat', cursive;
+font-size: 30px;
+padding: 0px;
+margin-top: 20px;
+/* text-align: center; */
+
 `

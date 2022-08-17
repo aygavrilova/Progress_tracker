@@ -6,7 +6,7 @@ import styled from "styled-components";
 import Modal from '../../components/Modal/Modal.js'
 import LoadingSpinner from '../../components/LoadingSpinner'
 
-const config = getConfig();
+const config = getConfig(); // get auth_config settings
 
 
 const Profile = () => {
@@ -28,6 +28,7 @@ const Profile = () => {
     const [email, setEmail] = useState("");
     const [showFullNameModal, setShowFullNameModal] = useState(false)
     const [showEmailPrefsModal, setShowEmailPrefsModal] = useState(false)
+    // email prefs state
     const [notifyFrBth, setNotifyFrBth] = useState(true)
     const [notifyFrReq, setNotifyFrReq] = useState(true)
     const [notifyOnComms, setNotifyOnComms] = useState(true)
@@ -284,7 +285,7 @@ flex-direction: column;
 align-items: center;
 height: 100vh;
 width: 60vw;
-margin-bottom: 15px;
+margin-bottom: 30px;
 background-color: white;
 border-radius: 25px;
 `
@@ -337,11 +338,11 @@ border-radius: 8px;
 margin: 0px 5px 20px 0px;
 padding: 5px 15px 5px 15px;
 :focus {
-    background-color: #51C4D3;
+    background-color: #DEBA9D;
     color: white;
 }
 :hover {
-    border: 2px solid #51C4D3;
+    border: 2px solid #DEBA9D;
 }
 `
 
@@ -354,11 +355,11 @@ margin: 50px 20px 0px 20px;
 border: 2px solid #1A1A40; 
 border-radius: 8px; 
 :hover {
-    border: 2px solid #51C4D3;
+    border: 2px solid #DEBA9D;
     border-radius: 8px;
 }
 :focus {
-    border: 2px solid #51C4D3;
+    border: 2px solid #DEBA9D;
 }
 `
 
@@ -398,9 +399,6 @@ const Check = styled.input`
 margin-right: 15px;
 `
 
-const EmailPrefsUpdate = styled.button`
-`
-
 const Button = styled.button`
 display: inline-block;
 cursor: pointer;
@@ -412,6 +410,6 @@ font-size: 15px;
 border-radius: 15px;
 border: 1px solid #e1e1e1;
 :hover{
-    border: 2px solid #51C4D3;
+    border: 2px solid #DEBA9D;
 }
 `
