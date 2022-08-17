@@ -42,7 +42,6 @@ const patchCurrProfileHandler = async (req, res) => {
     let body = req.body;
 
     let result = await updateProfile(id, body)
-    const
     if(!result.ok){
         return res.status(500).json({status:500, message:result.error});
     }
